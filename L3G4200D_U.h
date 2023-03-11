@@ -594,7 +594,7 @@ public:
    */
   bool begin(int spiChipSelect,
              gyroRange_t range = GYRO_RANGE_4_DOT_36_RAD_PER_SEC,
-             SPIClass &spi = SPI, uint32_t spiFrequency = 5 * 1000 * 1000);
+             SPIClass &spi = SPI, uint32_t spiFrequency = 5L * 1000L * 1000L);
 
   /*! @brief Enables automatic range increasing if the sensor seems to be
    * saturating its current range.
