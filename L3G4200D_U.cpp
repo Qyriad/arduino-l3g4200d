@@ -37,7 +37,7 @@ L3G4200D_Unified::L3G4200D_Unified(int32_t sensorId) {
 }
 
 bool L3G4200D_Unified::begin(int spiChipSelect, gyroRange_t range,
-                             SPIClass &spi) {
+                             SPIClass &spi, uint32_t spiFrequency) {
 
   // Store the Chip Select we're using, set it as an output pin, and leave it
   // HIGH, as SPI CS is active LOW, and we don't want the gyroscope enabled yet.
@@ -53,7 +53,7 @@ bool L3G4200D_Unified::begin(int spiChipSelect, gyroRange_t range,
   // .. and start it up.
   _spi->begin();
 
-  SPISettings settings = SPISettings(5 * 1000 * 1000, MSBFIRST, SPI_MODE3);
+  SPISettings settings = SPISettings(spiFrequency, MSBFIRST, SPI_MODE3);
   _spiSettings = settings;
 
   // Check that the chip ID is what we expect: 0b11010011, or 0xd3 in hex, and

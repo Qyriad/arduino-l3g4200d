@@ -584,6 +584,9 @@ public:
    * interface is pin 12.
    * [SPI]: https://docs.arduino.cc/learn/communication/spi
    * @endparblock
+   * @param spiFrequency The clock frequency for the SPI peripheral. Defaults
+   * to 5 MHz if not specified. Must be lower than 10 MHz, per the L3G4200D
+   * datasheet.
    *
    * @returns True if this sensor was successfully activated, false if it was
    * not. If false, you can use @ref enableDebugLogging to potentially get
@@ -591,7 +594,7 @@ public:
    */
   bool begin(int spiChipSelect,
              gyroRange_t range = GYRO_RANGE_4_DOT_36_RAD_PER_SEC,
-             SPIClass &spi = SPI);
+             SPIClass &spi = SPI, uint32_t spiFrequency = 5 * 1000 * 1000);
 
   /*! @brief Enables automatic range increasing if the sensor seems to be
    * saturating its current range.
