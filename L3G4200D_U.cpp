@@ -1,16 +1,19 @@
 #include "L3G4200D_U.h"
 
-
 void L3G4200D_Unified::debugLog(const char str[]) {
   if (_debugLoggingEnabled) {
-    Serial.print("["); Serial.print(_sensorId); Serial.print("]: ");
+    Serial.print("[");
+    Serial.print(_sensorId);
+    Serial.print("]: ");
     Serial.print(str);
   }
 }
 
 void L3G4200D_Unified::debugLog(int val) {
   if (_debugLoggingEnabled) {
-    Serial.print("["); Serial.print(_sensorId); Serial.print("]: ");
+    Serial.print("[");
+    Serial.print(_sensorId);
+    Serial.print("]: ");
     Serial.print(val);
   }
 }
@@ -27,14 +30,14 @@ void L3G4200D_Unified::debugAppend(int val) {
   }
 }
 
-
 L3G4200D_Unified::L3G4200D_Unified(int32_t sensorId) {
   _sensorId = sensorId;
   _autoRangeEnabled = false;
   _debugLoggingEnabled = false;
 }
 
-bool L3G4200D_Unified::begin(int spiChipSelect, gyroRange_t range, SPIClass &spi) {
+bool L3G4200D_Unified::begin(int spiChipSelect, gyroRange_t range,
+                             SPIClass &spi) {
 
   // Store the Chip Select we're using, set it as an output pin, and leave it
   // HIGH, as SPI CS is active LOW, and we don't want the gyroscope enabled yet.
@@ -53,17 +56,20 @@ bool L3G4200D_Unified::begin(int spiChipSelect, gyroRange_t range, SPIClass &spi
   SPISettings settings = SPISettings(5 * 1000 * 1000, MSBFIRST, SPI_MODE3);
   _spiSettings = settings;
 
-  // Check that the chip ID is what we expect: 0b11010011, or 0xd3 in hex, and 211 in decimal.
+  // Check that the chip ID is what we expect: 0b11010011, or 0xd3 in hex, and
+  // 211 in decimal.
   beginTransaction();
   uint8_t chipId = spiReadReg(REG_WHO_AM_I);
   endTransaction();
 
   if (chipId == 0) {
-    debugLog("We tried to read the L3G4200 gyroscope chip ID, but got all logic LOWs (0s) in response.\n");
+    debugLog("We tried to read the L3G4200 gyroscope chip ID, but got all "
+             "logic LOWs (0s) in response.\n");
     debugLog("Check that all your wires are connected properly?\n");
     return false;
   } else if (chipId == 0xFF) {
-    debugLog("We tried to read the L3G4200 gyroscope chip ID, but got all logic HIGHs (1s) in response.\n");
+    debugLog("We tried to read the L3G4200 gyroscope chip ID, but got all "
+             "logic HIGHs (1s) in response.\n");
     debugLog("Check that all your wires are connected properly?\n");
     return false;
   } else if (chipId != L3G4200D_CHIP_ID) {
@@ -72,7 +78,8 @@ bool L3G4200D_Unified::begin(int spiChipSelect, gyroRange_t range, SPIClass &spi
     debugLog(", but got ");
     debugLog(chipId);
     debugLog("\n");
-    debugLog("Perhaps you have the wrong chip select connected or you're connected to a different part?\n");
+    debugLog("Perhaps you have the wrong chip select connected or you're "
+             "connected to a different part?\n");
     return false;
   }
 
@@ -85,7 +92,8 @@ bool L3G4200D_Unified::begin(int spiChipSelect, gyroRange_t range, SPIClass &spi
   // Ask the gyroscope not to update the high byte and low byte of a sample
   // between reads, use the low byte at the lower address (as is the default),
   // and use the gyroscope range the user asked for.
-  spiWriteReg(REG_CTRL_4, CTRL4_UPDATE_MSB_AND_LSB_TOGETHER | CTRL4_LSB_AT_LOWER_ADDRESS | range);
+  spiWriteReg(REG_CTRL_4, CTRL4_UPDATE_MSB_AND_LSB_TOGETHER |
+                              CTRL4_LSB_AT_LOWER_ADDRESS | range);
 
   spiWriteReg(REG_CTRL_5, CTRL5_NO_FILTERING);
 
@@ -110,25 +118,27 @@ bool L3G4200D_Unified::getEvent(sensors_event_t *event) {
 
     // Give it a little bit of lee-way, in case it doesn't hit exactly 32767.
     const int16_t SATURATED_SAMPLE_VALUE = INT16_MAX - 10;
-    if (abs(sample.x) >= SATURATED_SAMPLE_VALUE || abs(sample.y) >= SATURATED_SAMPLE_VALUE || abs(sample.z) >= SATURATED_SAMPLE_VALUE) {
+    if (abs(sample.x) >= SATURATED_SAMPLE_VALUE ||
+        abs(sample.y) >= SATURATED_SAMPLE_VALUE ||
+        abs(sample.z) >= SATURATED_SAMPLE_VALUE) {
 
       // Bump the range if we can, and re-read the sample.
       switch (_range) {
-        // Intentional fallthrough.
-        default:
-        case GYRO_RANGE_4_DOT_36_RAD_PER_SEC:
-          setRange(GYRO_RANGE_8_DOT_73_RAD_PER_SEC);
-          sample = rawXYZ();
-          break;
+      // Intentional fallthrough.
+      default:
+      case GYRO_RANGE_4_DOT_36_RAD_PER_SEC:
+        setRange(GYRO_RANGE_8_DOT_73_RAD_PER_SEC);
+        sample = rawXYZ();
+        break;
 
-        case GYRO_RANGE_8_DOT_73_RAD_PER_SEC:
-          setRange(GYRO_RANGE_34_DOT_91_RAD_PER_SEC);
-          sample = rawXYZ();
-          break;
+      case GYRO_RANGE_8_DOT_73_RAD_PER_SEC:
+        setRange(GYRO_RANGE_34_DOT_91_RAD_PER_SEC);
+        sample = rawXYZ();
+        break;
 
-        case GYRO_RANGE_34_DOT_91_RAD_PER_SEC:
-          // We're already at maximum range; nothing to do here.
-          break;
+      case GYRO_RANGE_34_DOT_91_RAD_PER_SEC:
+        // We're already at maximum range; nothing to do here.
+        break;
       }
     }
   }
@@ -144,7 +154,6 @@ bool L3G4200D_Unified::getEvent(sensors_event_t *event) {
   event->gyro.x = sampleToRad(sample.x);
   event->gyro.y = sampleToRad(sample.y);
   event->gyro.z = sampleToRad(sample.z);
-
 
   return true;
 }
@@ -173,22 +182,23 @@ void L3G4200D_Unified::getSensor(sensor_t *sensor) {
 
 void L3G4200D_Unified::setRange(gyroRange_t range) {
   _range = range;
-  spiWriteReg(REG_CTRL_4, CTRL4_UPDATE_MSB_AND_LSB_TOGETHER | CTRL4_LSB_AT_LOWER_ADDRESS | range);
+  spiWriteReg(REG_CTRL_4, CTRL4_UPDATE_MSB_AND_LSB_TOGETHER |
+                              CTRL4_LSB_AT_LOWER_ADDRESS | range);
 }
 
 float L3G4200D_Unified::rangeInRadians() {
   // Divided by 2 because we have both negative and positive values.
   switch (_range) {
-    // Intentional fallthrough.
-    default:
-    case GYRO_RANGE_4_DOT_36_RAD_PER_SEC:
-      return 4.36f / 2;
+  // Intentional fallthrough.
+  default:
+  case GYRO_RANGE_4_DOT_36_RAD_PER_SEC:
+    return 4.36f / 2;
 
-    case GYRO_RANGE_8_DOT_73_RAD_PER_SEC:
-      return 8.73f / 2;
+  case GYRO_RANGE_8_DOT_73_RAD_PER_SEC:
+    return 8.73f / 2;
 
-    case GYRO_RANGE_34_DOT_91_RAD_PER_SEC:
-      return 34.91f / 2;
+  case GYRO_RANGE_34_DOT_91_RAD_PER_SEC:
+    return 34.91f / 2;
   }
 }
 
@@ -203,19 +213,19 @@ void L3G4200D_Unified::rawWriteReg(uint8_t regAddress, uint8_t newValue) {
 int16_t L3G4200D_Unified::rawX() {
   uint8_t xLow = spiReadReg(REG_OUT_X_L);
   uint8_t xHigh = spiReadReg(REG_OUT_X_H);
-  return (int16_t) ((xHigh << 8) | xLow);
+  return (int16_t)((xHigh << 8) | xLow);
 }
 
 int16_t L3G4200D_Unified::rawY() {
   uint8_t yLow = spiReadReg(REG_OUT_Y_L);
   uint8_t yHigh = spiReadReg(REG_OUT_Y_H);
-  return (int16_t) ((yHigh << 8) | yLow);
+  return (int16_t)((yHigh << 8) | yLow);
 }
 
 int16_t L3G4200D_Unified::rawZ() {
   uint8_t zLow = spiReadReg(REG_OUT_Z_L);
   uint8_t zHigh = spiReadReg(REG_OUT_Z_H);
-  return (int16_t) ((zHigh << 8) | zLow);
+  return (int16_t)((zHigh << 8) | zLow);
 }
 
 rawGyroSample L3G4200D_Unified::rawXYZ() {
@@ -244,20 +254,20 @@ rawGyroSample L3G4200D_Unified::rawXYZ() {
 
   // Now start storing values. Remember, the value that's returned by the SPI
   // transfer is the value we asked for in the *last* call to _spi->transfer().
-  uint8_t xLow  = _spi->transfer(readCmd);
+  uint8_t xLow = _spi->transfer(readCmd);
   uint8_t xHigh = _spi->transfer(readCmd);
-  uint8_t yLow  = _spi->transfer(readCmd);
+  uint8_t yLow = _spi->transfer(readCmd);
   uint8_t yHigh = _spi->transfer(readCmd);
-  uint8_t zLow  = _spi->transfer(readCmd);
+  uint8_t zLow = _spi->transfer(readCmd);
   uint8_t zHigh = _spi->transfer(readCmd);
 
   endTransaction();
 
   // Now populate the struct with the raw samples.
   rawGyroSample sample;
-  sample.x = (int16_t) ((xHigh << 8) | xLow);
-  sample.y = (int16_t) ((yHigh << 8) | yLow);
-  sample.z = (int16_t) ((zHigh << 8) | zLow);
+  sample.x = (int16_t)((xHigh << 8) | xLow);
+  sample.y = (int16_t)((yHigh << 8) | yLow);
+  sample.z = (int16_t)((zHigh << 8) | zLow);
 
   // And return it.
   return sample;
@@ -279,8 +289,8 @@ uint8_t L3G4200D_Unified::spiReadReg(uint8_t regAddress) {
 
   /* L3G4200D SPI read command is:
    * 1 bit:  always set HIGH to indicate we're reading
-   * 1 bit:  HIGH indicates auto-increment address across multiple reads, so we assert LOW.
-   * 5 bits: The address of the register we want to read from.
+   * 1 bit:  HIGH indicates auto-increment address across multiple reads, so we
+   * assert LOW. 5 bits: The address of the register we want to read from.
    *
    * So the byte we transfer over SPI is the address, but with the most
    * significant bit set to indicate a register read.
@@ -303,9 +313,9 @@ void L3G4200D_Unified::spiWriteReg(uint8_t regAddress, uint8_t value) {
 
   /* L3G4200D SPI write command is:
    * 1 bit:  always LOW to indicate we're writing
-   * 1 bit:  HIGH indicates auto-increment address across multiple reads, so we assert LOW
-   * 5 bits: The address of the register we want to read from.
-   * 8 bits: The byte that is written to that register.
+   * 1 bit:  HIGH indicates auto-increment address across multiple reads, so we
+   * assert LOW 5 bits: The address of the register we want to read from. 8
+   * bits: The byte that is written to that register.
    *
    * So that's two bytes, one that's just the register address, anod
    * another that's just the value to write to that register.
@@ -317,7 +327,6 @@ void L3G4200D_Unified::spiWriteReg(uint8_t regAddress, uint8_t value) {
   endTransaction();
 }
 
-
 float L3G4200D_Unified::sampleToRad(int16_t fullScaleSample) {
   // The gyro chip gives us sample values as a fraction of the full scale.
   // rawSample / INT16_MAX = radValue / gyroRange
@@ -325,4 +334,3 @@ float L3G4200D_Unified::sampleToRad(int16_t fullScaleSample) {
   // radValue = (rawSample * gyroRange) / INT16_MAX
   return (fullScaleSample * rangeInRadians()) / INT16_MAX;
 }
-
