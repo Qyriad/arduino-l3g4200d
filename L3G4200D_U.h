@@ -536,7 +536,8 @@ typedef enum {
 
 /*!
  * @brief Class for interfacing with an L3G4200D gyroscope, using the Adafruit
- * Unified Sensor API. Most common methods: ::begin and ::getEvent.
+ * Unified Sensor API. Most common methods: L4G4200D_Unified::begin and
+ * L3G4200D_Unified::getEvent.
  *
  * @ingroup sensor
  */
@@ -562,7 +563,8 @@ public:
    * to the SPI CS (Chip Select) pin on the L3G4200D. For example, on the
    * [Digilent PmodGYRO](https://digilent.com/reference/pmod/pmodgyro/start),
    * CS is pin 1 on the J1 (the first jumper). If you connected that pin to
-   * pin 10 on your Arduino board, then you would call ::begin like this:
+   * pin 10 on your Arduino board, then you would call L4G4200D_Unified::begin
+   * like this:
    *
    * @code{.cpp}
    * L3G4200D_Unified gyroscope = L3G4200D(2113);
