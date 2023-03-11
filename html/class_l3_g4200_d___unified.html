@@ -84,9 +84,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac4c893acd62411e31b994786d7f73215"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l3_g4200_d___unified.html#ac4c893acd62411e31b994786d7f73215">L3G4200D_Unified</a> (int32_t sensorId)</td></tr>
 <tr class="memdesc:ac4c893acd62411e31b994786d7f73215"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new object representing an L3G4200D  gyroscope.  <a href="#ac4c893acd62411e31b994786d7f73215">More...</a><br /></td></tr>
 <tr class="separator:ac4c893acd62411e31b994786d7f73215"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a666f9ea938feaae0cfb5079a523403a2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l3_g4200_d___unified.html#a666f9ea938feaae0cfb5079a523403a2">begin</a> (int spiChipSelect, <a class="el" href="group__sensor.html#ga57b9f32344ee50c70bebb35d2d5865ff">gyroRange_t</a> range=<a class="el" href="group__sensor.html#gga57b9f32344ee50c70bebb35d2d5865ffa67e11e5dd4ac64d6727983fca4c709cc">GYRO_RANGE_4_DOT_36_RAD_PER_SEC</a>, SPIClass &amp;spi=SPI, uint32_t spiFrequency=5 *1000 *1000)</td></tr>
-<tr class="memdesc:a666f9ea938feaae0cfb5079a523403a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this L3G4200D gyroscope using SPI.  <a href="#a666f9ea938feaae0cfb5079a523403a2">More...</a><br /></td></tr>
-<tr class="separator:a666f9ea938feaae0cfb5079a523403a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a311fe45c32e2b9e33e86681290807bab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l3_g4200_d___unified.html#a311fe45c32e2b9e33e86681290807bab">begin</a> (int spiChipSelect, <a class="el" href="group__sensor.html#ga57b9f32344ee50c70bebb35d2d5865ff">gyroRange_t</a> range=<a class="el" href="group__sensor.html#gga57b9f32344ee50c70bebb35d2d5865ffa67e11e5dd4ac64d6727983fca4c709cc">GYRO_RANGE_4_DOT_36_RAD_PER_SEC</a>, SPIClass &amp;spi=SPI, uint32_t spiFrequency=5L *1000L *1000L)</td></tr>
+<tr class="memdesc:a311fe45c32e2b9e33e86681290807bab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this L3G4200D gyroscope using SPI.  <a href="#a311fe45c32e2b9e33e86681290807bab">More...</a><br /></td></tr>
+<tr class="separator:a311fe45c32e2b9e33e86681290807bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a561ee487dbb3b7f20861afd057934db8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l3_g4200_d___unified.html#a561ee487dbb3b7f20861afd057934db8">enableAutoRange</a> (bool enabled)</td></tr>
 <tr class="memdesc:a561ee487dbb3b7f20861afd057934db8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables automatic range increasing if the sensor seems to be saturating its current range.  <a href="#a561ee487dbb3b7f20861afd057934db8">More...</a><br /></td></tr>
 <tr class="separator:a561ee487dbb3b7f20861afd057934db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,8 +142,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a666f9ea938feaae0cfb5079a523403a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a666f9ea938feaae0cfb5079a523403a2">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a311fe45c32e2b9e33e86681290807bab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a311fe45c32e2b9e33e86681290807bab">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,7 +170,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>spiFrequency</em> = <code>5&#160;*&#160;1000&#160;*&#160;1000</code>&#160;</td>
+          <td class="paramname"><em>spiFrequency</em> = <code>5L&#160;*&#160;1000L&#160;*&#160;1000L</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -184,7 +184,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spiChipSelect</td><td><p class="starttd">The pin number on your board that you have connected to the SPI CS (Chip Select) pin on the L3G4200D. For example, on the <a href="https://digilent.com/reference/pmod/pmodgyro/start">Digilent PmodGYRO</a>, CS is pin 1 on the J1 (the first jumper). If you connected that pin to pin 10 on your Arduino board, then you would call L4G4200D_Unified::begin like this:</p>
-<div class="fragment"><div class="line"><a class="code" href="class_l3_g4200_d___unified.html">L3G4200D_Unified</a> gyroscope = L3G4200D(2113);</div><div class="line">gyroscope.<a class="code" href="class_l3_g4200_d___unified.html#a666f9ea938feaae0cfb5079a523403a2">begin</a>(10);</div></div><!-- fragment --><p class="endtd"></p>
+<div class="fragment"><div class="line"><a class="code" href="class_l3_g4200_d___unified.html">L3G4200D_Unified</a> gyroscope = L3G4200D(2113);</div><div class="line">gyroscope.<a class="code" href="class_l3_g4200_d___unified.html#a311fe45c32e2b9e33e86681290807bab">begin</a>(10);</div></div><!-- fragment --><p class="endtd"></p>
 </td></tr>
   </table>
   </dd>
